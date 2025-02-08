@@ -1,0 +1,25 @@
+#! /bin/sh -e
+
+ip=$1
+shift
+
+iptables -D OUTPUT -j signallingtest || true
+iptables -F signallingtest || true
+iptables -X signallingtest || true
+
+iptables -N signallingtest
+
+for port in "$@"; do
+    iptables -A signallingtest -p tcp --src $ip --sport $port -j DROP
+    iptables -A signallingtest -p tcp --dst $ip --dport $port -j DROP
+    iptables -A signallingtest -p tcp --src "::ffff:$ip" --sport $port -j DROP
+    iptables -A signallingtest -p tcp --dst "::ffff:$ip" --dport $port -j DROP
+done
+iptables -A OUTPUT -j signallingtest
+
+echo "Press ENTER to stop blocking traffic"
+read dummy
+
+iptables -D OUTPUT -j signallingtest
+iptables -F signallingtest
+iptables -X signallingtest

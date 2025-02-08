@@ -1,0 +1,17 @@
+#! /usr/bin/env ruby
+
+require "orocos"
+
+Orocos.initialize
+
+task = Orocos::RubyTasks::TaskContext.new "source"
+task.create_output_port "out", "/uint64_t"
+
+puts "PID: #{Process.pid}"
+
+i = 0
+loop do
+  i += 1
+  task.out.write i
+  sleep 0.002
+end
