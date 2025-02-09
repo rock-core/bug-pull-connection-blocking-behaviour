@@ -74,6 +74,8 @@ connection from the source to `pull_sink`, which is now blocked. Because of
 `oneway`, the calls do return and the RTT send thread can continue. However,
 once the queue is full, omniORB blocks.
 
+https://github.com/user-attachments/assets/94e71a8d-6e53-482b-86a7-0cc5bec5d3b1
+
 ## Validating the `signalling` flag as a solution
 
 What we implemented to solve this is the addition of a new flag on connection
