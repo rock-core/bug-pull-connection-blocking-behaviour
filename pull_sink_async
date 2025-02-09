@@ -1,0 +1,13 @@
+#! /usr/bin/env ruby
+
+require "orocos"
+require "orocos/async"
+
+Orocos.initialize
+
+last_display = Time.now
+Orocos::Async.proxy("source").port("out").on_data do |sample|
+  puts "#{Process.pid} #{sample} -- ASYNC" if Time.now - last_display > 0.1
+end
+
+Orocos::Async.exec

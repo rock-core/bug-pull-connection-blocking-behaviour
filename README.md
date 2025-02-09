@@ -89,3 +89,7 @@ validate that the send queue is not being filled anymore, and that the
 `push_sink` does not block. Modify 'source' to remove the sleep to be very sure
 (it's filling things WAY faster)
 
+`pull_sink_async` uses `Orocos::Async`, allowing to ensure that Orocos::Async
+proxies now use `signalling: false` by default. We validated that the old
+version of `Orocos::Async` (before the introduction of `signalling`) was showing
+the blocking behaviour, and that it stopped doing so afterwards
