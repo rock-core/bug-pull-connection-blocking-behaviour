@@ -1,0 +1,24 @@
+#! /usr/bin/env ruby
+
+require "orocos"
+
+Orocos.initialize
+
+task = Orocos::RubyTasks::TaskContext.new "sink"
+task.create_input_port "in", "/uint64_t"
+
+source_t = Orocos.get "source"
+source_t.out.connect_to task, pull: true, signalling: false
+
+r = source_t.out.reader pull: true, signalling: false
+
+loop do
+  if (s = task.in.read_new)
+    puts "#{Process.pid} #{s} -- SINK"
+  end
+
+  if (s = r.read_new)
+    puts "#{Process.pid} #{s} -- READER"
+  end
+  sleep 0.1
+end
